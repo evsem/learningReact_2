@@ -19,7 +19,11 @@ function App() {
     <div className="App">
       <div className="main_wrapper">
         <PostForm func_forAddNewPost={addNewPost_func} />
-        <PostList props_postList={posts} remove={removePost} />
+        {posts.length !== 0 ? (
+          <PostList props_postList={posts} remove={removePost} />
+        ) : (
+          <p className="text_aboutZeroPost">No posts</p>
+        )}
       </div>
     </div>
   )
