@@ -1,0 +1,29 @@
+.postItem_wrapper {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: transparent;
+  border: 2px solid teal;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.postItem_infoContainer {
+}
+
+.postItem_infoContainer__title {
+  font-size: 24px;
+  font-weight: 500;
+  font-family: 'Montserrat';
+  letter-spacing: 1px;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.postItem_infoContainer__body {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Montserrat';
+  color: grey;
+}

@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import PostForm from './Components/PostForm/PostForm'
+import PostList from './Components/PostList/PostList'
 
 function App() {
+  let [posts, setPosts] = useState([
+    { id: 1, title: 'JS', body: 'Programming language' },
+  ])
+
+  const addNewPost_func = (newPost) => {
+    setPosts([...posts, newPost])
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="main_wrapper">
+        <PostForm func_forAddNewPost={addNewPost_func} />
+        <PostList props_postList={posts} />
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
