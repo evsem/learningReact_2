@@ -2,7 +2,7 @@ import React from 'react'
 import MyButton from '../../UI/Buttons/MyButton'
 import classes from './PostItem.module.css'
 
-const PostItem = ({ props_postItem, number }) => {
+const PostItem = ({ props_postItem, number, removeFunc_inPostItem }) => {
   return (
     <div className={classes.postItem_wrapper}>
       <div className={classes.postItem_infoContainer}>
@@ -13,7 +13,9 @@ const PostItem = ({ props_postItem, number }) => {
           {props_postItem.body}
         </p>
       </div>
-      <MyButton>Delete</MyButton>
+      <MyButton onClick={() => removeFunc_inPostItem(props_postItem)}>
+        Delete
+      </MyButton>
     </div>
   )
 }

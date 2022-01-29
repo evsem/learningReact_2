@@ -11,11 +11,15 @@ function App() {
   const addNewPost_func = (newPost) => {
     setPosts([...posts, newPost])
   }
+
+  const removePost = (post) => {
+    setPosts(posts.filter((p) => p.id !== post.id))
+  }
   return (
     <div className="App">
       <div className="main_wrapper">
         <PostForm func_forAddNewPost={addNewPost_func} />
-        <PostList props_postList={posts} />
+        <PostList props_postList={posts} remove={removePost} />
       </div>
     </div>
   )
