@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import './App.css'
 import PostForm from './Components/PostForm/PostForm'
 import PostList from './Components/PostList/PostList'
@@ -24,17 +24,22 @@ function App() {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
 
-  const getSortedPosts = () => {
-    console.log('Hello')
+  const sortedPosts = useMemo(() => {
+    console.log('soua')
     if (selectedSort) {
       return [...posts].sort((a, b) =>
         a[selectedSort].localeCompare(b[selectedSort])
       )
     }
     return posts
-  }
+  }, [selectedSort, posts])
 
-  const selectedPosts = getSortedPosts()
+  const selectedAndSearchedPosts = useMemo(() => {
+    return sortedPosts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery)
+    )
+  }, [searchQuery, sortedPosts])
+
   const sortPosts = (sort) => {
     //Перезаписвыаем состояние
     setSelectedSort(sort)
@@ -48,19 +53,22 @@ function App() {
         <MySelect
           value={selectedSort}
           onChange={sortPosts}
-          defaultValue="Sortirovka"
+          defaultValue="Sorting"
           options={[
             { value: 'title', name: 'By name' },
             { value: 'body', name: 'By discription' },
           ]}
         />
         <MyInput
-          placeholder="Search..."
+          placeholder="Search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        {posts.length !== 0 ? (
-          <PostList props_postList={selectedPosts} remove={removePost} />
+        {selectedAndSearchedPosts.length !== 0 ? (
+          <PostList
+            props_postList={selectedAndSearchedPosts}
+            remove={removePost}
+          />
         ) : (
           <p className="text_aboutZeroPost">No posts</p>
         )}

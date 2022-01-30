@@ -6,7 +6,8 @@
   font-size: 16px;
   font-weight: 500;
   font-family: 'Montserrat';
-  color: grey;
+  color: black;
   text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
 }
