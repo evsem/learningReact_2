@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import './App.css'
+import PostFilter from './Components/PostFilter'
 import PostForm from './Components/PostForm/PostForm'
 import PostList from './Components/PostList/PostList'
 import MyInput from './UI/Inputs/MyInput'
@@ -13,8 +14,7 @@ function App() {
     { id: 4, title: 'Java', body: 'Programming language' },
     { id: 5, title: 'Python', body: 'Programming language' },
   ])
-  let [selectedSort, setSelectedSort] = useState('')
-  let [searchQuery, setSearchQuery] = useState('')
+  let [filter, setFilter] = useState({ sort: '', query: '' })
 
   const addNewPost_func = (newPost) => {
     setPosts([...posts, newPost])
@@ -26,52 +26,30 @@ function App() {
 
   const sortedPosts = useMemo(() => {
     console.log('soua')
-    if (selectedSort) {
+    if (filter.sort) {
       return [...posts].sort((a, b) =>
-        a[selectedSort].localeCompare(b[selectedSort])
+        a[filter.sort].localeCompare(b[filter.sort])
       )
     }
     return posts
-  }, [selectedSort, posts])
+  }, [filter.sort, posts])
 
   const selectedAndSearchedPosts = useMemo(() => {
     return sortedPosts.filter((post) =>
-      post.title.toLowerCase().includes(searchQuery)
+      post.title.toLowerCase().includes(filter.query)
     )
-  }, [searchQuery, sortedPosts])
+  }, [filter.query, sortedPosts])
 
-  const sortPosts = (sort) => {
-    //Перезаписвыаем состояние
-    setSelectedSort(sort)
-    //Передаём отсортированный массив; функция sort не возвращает новый отсортированный массив, она мутирует с тем массивом, к которму она была применена(состояние напрямую менять нельзя); localeCompare - функция сравнения строк.
-  }
   return (
     <div className="App">
       <div className="main_wrapper">
         <PostForm func_forAddNewPost={addNewPost_func} />
         <hr style={{ margin: '10px 0px' }} />
-        <MySelect
-          value={selectedSort}
-          onChange={sortPosts}
-          defaultValue="Sorting"
-          options={[
-            { value: 'title', name: 'By name' },
-            { value: 'body', name: 'By discription' },
-          ]}
+        <PostFilter filter={filter} setFilter={setFilter} />
+        <PostList
+          props_postList={selectedAndSearchedPosts}
+          remove={removePost}
         />
-        <MyInput
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {selectedAndSearchedPosts.length !== 0 ? (
-          <PostList
-            props_postList={selectedAndSearchedPosts}
-            remove={removePost}
-          />
-        ) : (
-          <p className="text_aboutZeroPost">No posts</p>
-        )}
       </div>
     </div>
   )
