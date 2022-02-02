@@ -1,4 +1,5 @@
 import React from 'react'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import PostItem from '../PostItem/PostItem'
 import classes from './PostList.module.css'
 
@@ -8,14 +9,21 @@ const PostList = ({ props_postList, remove }) => {
   }
   return (
     <div className={classes.postList_wrapper}>
-      {props_postList.map((post, index) => (
-        <PostItem
-          props_postItem={post}
-          key={props_postList.id}
-          number={index + 1}
-          removeFunc_inPostItem={remove}
-        />
-      ))}
+      <TransitionGroup>
+        {props_postList.map((post, index) => (
+          <CSSTransition
+            key={props_postList.id}
+            timeout={500}
+            classNames="post"
+          >
+            <PostItem
+              props_postItem={post}
+              number={index + 1}
+              removeFunc_inPostItem={remove}
+            />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </div>
   )
 }

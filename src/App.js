@@ -3,6 +3,7 @@ import './App.css'
 import PostFilter from './Components/PostFilter'
 import PostForm from './Components/PostForm/PostForm'
 import PostList from './Components/PostList/PostList'
+import { usePosts } from './Hooks/usePosts'
 import MyInput from './UI/Inputs/MyInput'
 import MySelect from './UI/Select/MySelect'
 
@@ -15,41 +16,21 @@ function App() {
     { id: 5, title: 'Python', body: 'Programming language' },
   ])
   let [filter, setFilter] = useState({ sort: '', query: '' })
+  let sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   const addNewPost_func = (newPost) => {
     setPosts([...posts, newPost])
   }
-
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
-
-  const sortedPosts = useMemo(() => {
-    console.log('soua')
-    if (filter.sort) {
-      return [...posts].sort((a, b) =>
-        a[filter.sort].localeCompare(b[filter.sort])
-      )
-    }
-    return posts
-  }, [filter.sort, posts])
-
-  const selectedAndSearchedPosts = useMemo(() => {
-    return sortedPosts.filter((post) =>
-      post.title.toLowerCase().includes(filter.query)
-    )
-  }, [filter.query, sortedPosts])
-
   return (
     <div className="App">
       <div className="main_wrapper">
         <PostForm func_forAddNewPost={addNewPost_func} />
         <hr style={{ margin: '10px 0px' }} />
         <PostFilter filter={filter} setFilter={setFilter} />
-        <PostList
-          props_postList={selectedAndSearchedPosts}
-          remove={removePost}
-        />
+        <PostList props_postList={sortedAndSearchedPosts} remove={removePost} />
       </div>
     </div>
   )
