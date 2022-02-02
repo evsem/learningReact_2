@@ -1,9 +1,11 @@
+import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 import './App.css'
 import PostFilter from './Components/PostFilter'
 import PostForm from './Components/PostForm/PostForm'
 import PostList from './Components/PostList/PostList'
 import { usePosts } from './Hooks/usePosts'
+import MyButton from './UI/Buttons/MyButton'
 import MyInput from './UI/Inputs/MyInput'
 import MySelect from './UI/Select/MySelect'
 
@@ -24,12 +26,20 @@ function App() {
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
+
+  async function fetchPosts() {
+    const response = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
+    )
+    setPosts(response.data)
+  }
   return (
     <div className="App">
       <div className="main_wrapper">
         <PostForm func_forAddNewPost={addNewPost_func} />
         <hr style={{ margin: '10px 0px' }} />
         <PostFilter filter={filter} setFilter={setFilter} />
+        <MyButton onClick={fetchPosts}>Get posts with server</MyButton>
         <PostList props_postList={sortedAndSearchedPosts} remove={removePost} />
       </div>
     </div>
